@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>题目助手 · 设置</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #f5f7fb; font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; color: #111827; font-size: 14px; padding: 28px 16px 60px; }
+  .page { max-width: 720px; margin: 0 auto; }
+  .hd { display: flex; gap: 12px; align-items: center; margin-bottom: 18px; }
+  .logo { width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(140deg, #3b82f6, #4f46e5); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; }
+  h1 { font-size: 18px; margin: 0; }
+  .sub { color: #6b7280; font-size: 12.5px; margin-top: 2px; }
+  .card { background: #fff; border: 1px solid #e6e9ef; border-radius: 14px; padding: 18px 20px; margin-bottom: 14px; }
+  .card h2 { font-size: 13.5px; margin: 0 0 14px; display: flex; align-items: center; gap: 8px; }
+  .card h2 .dot { width: 6px; height: 6px; border-radius: 50%; background: #2563eb; }
+  label.field { display: block; margin-bottom: 14px; }
+  label.field > span { display: block; font-size: 12.5px; color: #4b5563; margin-bottom: 6px; font-weight: 500; }
+  input[type=text], input[type=password], select, input[type=number] { width: 100%; border: 1px solid #e2e6ee; border-radius: 9px; padding: 9px 11px; font-size: 13px; font-family: inherit; color: #111827; outline: none; background: #fff; }
+  input:focus, select:focus { border-color: #93c5fd; box-shadow: 0 0 0 3px rgba(59,130,246,.12); }
+  .hint { font-size: 11.5px; color: #8b95a5; margin-top: 5px; line-height: 1.6; }
+  .hint a { color: #2563eb; text-decoration: none; }
+  .hint a:hover { text-decoration: underline; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .keyrow { display: flex; gap: 8px; }
+  .keyrow input { flex: 1; }
+  .keyrow button { flex: none; border: 1px solid #e2e6ee; background: #fff; border-radius: 9px; padding: 0 12px; font-size: 12px; color: #4b5563; cursor: pointer; font-family: inherit; }
+  .seg { display: inline-flex; gap: 4px; background: #f3f4f6; padding: 3px; border-radius: 9px; }
+  .seg button { border: none; background: transparent; color: #6b7280; padding: 5px 14px; border-radius: 7px; font-size: 12.5px; cursor: pointer; font-family: inherit; }
+  .seg button.on { background: #fff; color: #1d4ed8; font-weight: 600; box-shadow: 0 1px 2px rgba(15,23,42,.1); }
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; background: #fffffff2; border-top: 1px solid #e6e9ef; padding: 12px 16px; backdrop-filter: blur(6px); }
+  .bar .inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; gap: 10px; }
+  button.primary { border: none; background: #2563eb; color: #fff; border-radius: 9px; padding: 9px 20px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  button.primary:hover { background: #1d4ed8; }
+  button.plain { border: 1px solid #e2e6ee; background: #fff; color: #374151; border-radius: 9px; padding: 8px 16px; font-size: 12.5px; cursor: pointer; font-family: inherit; }
+  button.plain:hover { border-color: #bfdbfe; color: #1d4ed8; }
+  #saveMsg { font-size: 12.5px; color: #15803d; }
+  #saveMsg.err { color: #b91c1c; }
+  .steps { margin: 0; padding-left: 18px; font-size: 12.5px; color: #4b5563; line-height: 1.9; }
+  .steps code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="hd">
+    <div class="logo">题</div>
+    <div>
+      <h1>题目助手 · 设置</h1>
+      <div class="sub">选一个免费的大模型服务商，粘贴 API Key 就能用。Key 只存在本机浏览器里。</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="dot"></span>接口配置</h2>
+
+    <label class="field">
+      <span>服务商预设</span>
+      <select id="provider"></select>
+      <div class="hint" id="providerNote"></div>
+    </label>
+
+    <label class="field">
+      <span>接口地址（baseUrl）</span>
+      <input type="text" id="baseUrl" placeholder="https://api.siliconflow.cn/v1" spellcheck="false" />
+      <div class="hint">OpenAI 兼容地址，填到 <code>/v1</code> 这一层，插件会自动拼接 <code>/chat/completions</code>。</div>
+    </label>
+
+    <label class="field">
+      <span>模型名</span>
+      <input type="text" id="model" placeholder="Qwen/Qwen2.5-VL-7B-Instruct" spellcheck="false" />
+      <div class="hint">做截图识题必须选「支持图片输入」的视觉模型（VL / vision / 4v 系列）。</div>
+    </label>
+
+    <label class="field">
+      <span>API Key</span>
+      <div class="keyrow">
+        <input type="password" id="apiKey" placeholder="粘贴你的 Key" spellcheck="false" />
+        <button id="toggleKey" type="button">显示</button>
+      </div>
+      <div class="hint" id="keyHint"></div>
+    </label>
+
+    <label class="field" style="margin-bottom:0">
+      <span>图片编码方式（一般不用改）</span>
+      <select id="imageFormat">
+        <option value="dataurl">data URL（OpenAI / Gemini / 硅基流动）</option>
+        <option value="base64">纯 base64（智谱 GLM 系列）</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="card">
+    <h2><span class="dot"></span>解题偏好</h2>
+    <label class="field">
+      <span>默认回答方式</span>
+      <div class="seg" id="styleSeg">
+        <button data-style="answer">只要答案</button>
+        <button data-style="brief">简要解析</button>
+        <button data-style="detail">详细解答</button>
+      </div>
+    </label>
+    <div class="grid2">
+      <label class="field" style="margin-bottom:0">
+        <span>最大输出长度（tokens）</span>
+        <input type="number" id="maxTokens" min="200" max="8000" step="100" />
+      </label>
+      <label class="field" style="margin-bottom:0">
+        <span>温度（0 最稳，越小越保守）</span>
+        <input type="number" id="temperature" min="0" max="1" step="0.1" />
+      </label>
+    </div>
+    <div class="hint" id="tokenTip" style="margin-top:10px"></div>
+  </div>
+
+  <div class="card">
+    <h2><span class="dot"></span>怎么用</h2>
+    <ol class="steps">
+      <li>打开任意题库 / 作业页面，右下角出现蓝色「题」按钮。</li>
+      <li>选中题目文字 → 点浮出的「解题」，或按 <code>Alt+Q</code>。</li>
+      <li>题目是图片或 PDF 时，用面板里的「<b>截图识题</b>」框选区域，交给视觉模型直接读图。</li>
+      <li>题目结构复杂时用「<b>点选取题</b>」：鼠标高亮整块题目，点一下即解答。</li>
+    </ol>
+  </div>
+</div>
+
+<div class="bar">
+  <div class="inner">
+    <button class="primary" id="save">保存设置</button>
+    <button class="plain" id="test">测试连接</button>
+    <span id="saveMsg"></span>
+  </div>
+</div>
+
+<script src="options.js"></script>
+</body>
+</html>

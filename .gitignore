@@ -1,0 +1,19 @@
+# 备份与打包产物（体积大，且含浏览器缓存目录）
+backups/
+*.zip
+
+# 本地调试 / 测试临时产物
+.tmpedge*/
+.tmp-ext-*/
+.tmpserve/
+test-results/
+test-lab.html
+test-server.js
+
+# 工作区个人数据（含笔记，不公开）
+.workbuddy/
+
+# 操作系统
+Thumbs.db
+desktop.ini
+.DS_Store

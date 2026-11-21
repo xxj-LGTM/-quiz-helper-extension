@@ -1,0 +1,9 @@
+# 统一换行符，避免跨平台差异
+* text=auto eol=lf
+
+# Windows 脚本必须保持原样：.cmd 为 GBK 编码 + CRLF，转换会破坏中文
+*.cmd -text
+*.ps1 -text
+
+# 二进制资源
+*.png binary
